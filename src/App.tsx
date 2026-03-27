@@ -136,7 +136,8 @@ export default function App() {
     setIsMusicPlaying(false);
     setTimeout(() => {
       setIsMusicPlaying(true);
-    }, 150);
+      console.log("music playing");
+    }, 3000);
   };
 
   const handleRSVP = (e: React.FormEvent) => {
@@ -147,8 +148,8 @@ export default function App() {
 
   const itinerary: ItineraryItem[] = [
     { time: "05:00 pm", title: "Ceremonia religiosa", subtitle: "Parroquia del Espíritu Santo", icon: <Users className="w-6 h-6" />, side: 'left' },
-    /*{ time: "07:00 pm", title: "Recepción", subtitle: "", icon: <Calendar className="w-6 h-6" />, side: 'right' },
-    { time: "09:00 pm", title: "Brindis", subtitle: "", icon: <Music className="w-6 h-6" />, side: 'left' },*/
+    { time: "07:00 pm", title: "Recepción", subtitle: "", icon: <Calendar className="w-6 h-6" />, side: 'right' },
+    { time: "09:00 pm", title: "Brindis", subtitle: "", icon: <Music className="w-6 h-6" />, side: 'left' },
     { time: "10:00 pm", title: "Baile de novios", subtitle: "", icon: <Heart className="w-6 h-6" />, side: 'right' },
     { time: "11:00 pm", title: "Fiesta", subtitle: "", icon: <Music className="w-6 h-6" />, side: 'left' },
     { time: "02:00 am", title: "Fin de fiesta", subtitle: "", icon: <Clock className="w-6 h-6" />, side: 'right' },
