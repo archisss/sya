@@ -131,16 +131,20 @@ export default function App() {
   const [showWelcome, setShowWelcome] = useState(true);
 
   useEffect(() => {
-  const musicEnabled = localStorage.getItem('music-enabled');
-  if (musicEnabled === 'true') {
-      setIsMusicPlaying(true);
+    // No auto-play on mount to respect browser/Spotify restrictions
+    // We only read the preference, but we don't force it until the user interacts
+    const musicEnabled = localStorage.getItem('music-enabled');
+    if (musicEnabled === 'true') {
+      // If they had it on before, we could try to restore it, 
+      // but Spotify might still block it. Let's keep it off initially
+      // to force the user to click the button as requested.
+      // setIsMusicPlaying(true); 
     }
   }, []);
 
   const handleEnter = () => {
     setShowWelcome(false);
-    setIsMusicPlaying(true);
-    localStorage.setItem('music-enabled', 'true');
+    // No longer starting music automatically here to avoid Spotify blocking
   };
 
   const handleRSVP = (e: React.FormEvent) => {
@@ -557,6 +561,19 @@ export default function App() {
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
+        animate={!isMusicPlaying ? {
+          scale: [1, 1.1, 1],
+          boxShadow: [
+            "0 0 0 0px rgba(212, 175, 55, 0)",
+            "0 0 0 10px rgba(212, 175, 55, 0.2)",
+            "0 0 0 0px rgba(212, 175, 55, 0)"
+          ]
+        } : {}}
+        transition={!isMusicPlaying ? {
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        } : {}}
         className={`fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center z-50 border border-stone-100 shadow-lg transition-all duration-500 ${
           isMusicPlaying ? 'bg-gold text-stone-900' : 'bg-white text-gold'
         }`}
