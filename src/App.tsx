@@ -17,6 +17,7 @@ import {
 interface ItineraryItem {
   time: string;
   title: string;
+  subtitle?: string;
   icon: React.ReactNode;
   side: 'left' | 'right';
 }
@@ -42,6 +43,7 @@ const TimelineItem = ({ item, isLast }: { item: ItineraryItem; isLast: boolean }
           <div className="order-2">
             <p className="text-gold font-serif italic text-lg">{item.time}</p>
             <h4 className="text-xl font-serif text-stone-800">{item.title}</h4>
+            {item.subtitle && <p className="text-sm text-stone-500 mt-1">{item.subtitle}</p>}
           </div>
           <div className="order-1 text-stone-400">
             {item.icon}
@@ -58,6 +60,7 @@ const TimelineItem = ({ item, isLast }: { item: ItineraryItem; isLast: boolean }
           <div>
             <p className="text-gold font-serif italic text-lg">{item.time}</p>
             <h4 className="text-xl font-serif text-stone-800">{item.title}</h4>
+            {item.subtitle && <p className="text-sm text-stone-500 mt-1">{item.subtitle}</p>}
           </div>
         </div>
       </div>
@@ -139,12 +142,12 @@ export default function App() {
   };
 
   const itinerary: ItineraryItem[] = [
-    { time: "05:00 pm", title: "Ceremonia religiosa", icon: <Users className="w-6 h-6" />, side: 'left' },
-    { time: "07:00 pm", title: "Recepción", icon: <Calendar className="w-6 h-6" />, side: 'right' },
-    { time: "09:00 pm", title: "Brindis", icon: <Music className="w-6 h-6" />, side: 'left' },
-    { time: "10:00 pm", title: "Baile de novios", icon: <Heart className="w-6 h-6" />, side: 'right' },
-    { time: "11:00 pm", title: "Fiesta", icon: <Music className="w-6 h-6" />, side: 'left' },
-    { time: "02:00 am", title: "Fin de fiesta", icon: <Clock className="w-6 h-6" />, side: 'right' },
+    { time: "05:00 pm", title: "Ceremonia religiosa", subtitle: "Parroquia del Espíritu Santo", icon: <Users className="w-6 h-6" />, side: 'left' },
+    /*{ time: "07:00 pm", title: "Recepción", subtitle: "", icon: <Calendar className="w-6 h-6" />, side: 'right' },
+    { time: "09:00 pm", title: "Brindis", subtitle: "", icon: <Music className="w-6 h-6" />, side: 'left' },*/
+    { time: "10:00 pm", title: "Baile de novios", subtitle: "", icon: <Heart className="w-6 h-6" />, side: 'right' },
+    { time: "11:00 pm", title: "Fiesta", subtitle: "", icon: <Music className="w-6 h-6" />, side: 'left' },
+    { time: "02:00 am", title: "Fin de fiesta", subtitle: "", icon: <Clock className="w-6 h-6" />, side: 'right' },
   ];
 
   return (
