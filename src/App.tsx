@@ -10,8 +10,10 @@ import {
   Info, 
   CheckCircle2,
   ChevronDown,
-  Users
+  Users,
+  MessageCircle
 } from 'lucide-react';
+import { WEDDING_CONFIG, getWhatsAppMessage } from './config';
 
 // --- Types ---
 interface ItineraryItem {
@@ -125,11 +127,15 @@ const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string 
 );
 
 export default function App() {
-  const weddingDate = new Date('2026-05-30T17:00:00');
+  const weddingDate = new Date(WEDDING_CONFIG.weddingDate);
   const [rsvpStatus, setRsvpStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(WEDDING_CONFIG.showWelcomeScreen);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    document.title = `TuInvi - ${WEDDING_CONFIG.coupleInitials}`;
+  }, []);
 
   useEffect(() => {
     const musicEnabled = localStorage.getItem('music-enabled');
@@ -157,14 +163,15 @@ export default function App() {
     setTimeout(() => setRsvpStatus('success'), 1500);
   };
 
-  const itinerary: ItineraryItem[] = [
-    { time: "05:00 pm", title: "Ceremonia religiosa", subtitle: "Parroquia del Espíritu Santo", icon: <Users className="w-6 h-6" />, side: 'left' },
-    { time: "07:00 pm", title: "Recepción", subtitle: "", icon: <Calendar className="w-6 h-6" />, side: 'right' },
-    { time: "09:00 pm", title: "Brindis", subtitle: "", icon: <Music className="w-6 h-6" />, side: 'left' },
-    { time: "10:00 pm", title: "Baile de novios", subtitle: "", icon: <Heart className="w-6 h-6" />, side: 'right' },
-    { time: "11:00 pm", title: "Fiesta", subtitle: "", icon: <Music className="w-6 h-6" />, side: 'left' },
-    { time: "02:00 am", title: "Fin de fiesta", subtitle: "", icon: <Clock className="w-6 h-6" />, side: 'right' },
-  ];
+  const itinerary: ItineraryItem[] = WEDDING_CONFIG.itinerary.map(item => ({
+    ...item,
+    icon: item.type === 'ceremony' ? <Users className="w-6 h-6" /> :
+          item.type === 'reception' ? <Calendar className="w-6 h-6" /> :
+          item.type === 'toast' ? <Music className="w-6 h-6" /> :
+          item.type === 'dance' ? <Heart className="w-6 h-6" /> :
+          item.type === 'party' ? <Music className="w-6 h-6" /> :
+          <Clock className="w-6 h-6" />
+  }));
 
   return (
     <div className="min-h-screen selection:bg-gold/20">
@@ -183,11 +190,11 @@ export default function App() {
             >
               <Heart className="w-12 h-12 text-gold mx-auto mb-8 animate-pulse" />
               <h1 className="text-5xl md:text-7xl font-script text-white mb-4 leading-tight">
-                Sylvana <br /> 
+                {WEDDING_CONFIG.brideName} <br /> 
                 <span className="text-2xl md:text-4xl font-serif opacity-50">&</span> <br /> 
-                Jose Carlos
+                {WEDDING_CONFIG.groomName}
               </h1>
-              <p className="text-stone-400 font-serif italic text-lg mb-12">Nuestra Boda • 30 de Mayo, 2026</p>
+              <p className="text-stone-400 font-serif italic text-lg mb-12">Nuestra Boda • {WEDDING_CONFIG.weddingDateDisplay}</p>
               <button 
                 onClick={handleEnter}
                 className="px-12 py-4 bg-gold text-stone-900 rounded-full uppercase tracking-[0.3em] text-xs font-bold hover:bg-white transition-all duration-500 shadow-2xl"
@@ -238,7 +245,7 @@ export default function App() {
             transition={{ delay: 0.8, duration: 1 }}
             className="text-6xl md:text-9xl font-serif mb-8 leading-tight"
           >
-            Sylvana <br className="md:hidden" /> & <br className="md:hidden" /> Jose Carlos
+            {WEDDING_CONFIG.brideName} <br className="md:hidden" /> & <br className="md:hidden" /> {WEDDING_CONFIG.groomName}
           </motion.h1>
           <motion.div
             initial={{ opacity: 0 }}
@@ -247,7 +254,7 @@ export default function App() {
             className="flex flex-col items-center"
           >
             <div className="w-px h-16 bg-white/30 mb-4" />
-            <p className="text-xl md:text-2xl font-serif italic mb-6">30 de Mayo, 2026</p>
+            <p className="text-xl md:text-2xl font-serif italic mb-6">{WEDDING_CONFIG.weddingDateDisplay}</p>
             <div className="flex gap-4">
               <a 
                 href="#rsvp"
@@ -361,10 +368,9 @@ export default function App() {
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm">
                 <MapPin className="w-8 h-8 text-gold" />
               </div>
-              <h3 className="text-4xl font-serif mb-4">Las Cavas de Don José</h3>
-              <p className="text-stone-500 mb-8 leading-relaxed">
-                Gildardo Gómez 128959, Las Huertas,<br />
-                28000 Colima, Col., México.
+              <h3 className="text-4xl font-serif mb-4">{WEDDING_CONFIG.locationName}</h3>
+              <p className="text-stone-500 mb-8 leading-relaxed whitespace-pre-line">
+                {WEDDING_CONFIG.locationAddress}
               </p>
               <a 
                 href="https://www.google.com/maps/place/Las+Cavas+de+Don+Jos%C3%A9/@19.2416912,-103.7304707,3a,75y,90t/data=!3m8!1e2!3m6!1sCIHM0ogKEICAgICE7KOHuQE!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FAHVAwep_5q592BxyIhcs84ZX5nrg2eFrwXP-dFvBVAaDMgNozl1bmgyRulnzPF4cLtJtDtCCruzdDshJI0B1YvD7d4L0jKHYvuaBVWVWGyOwFovzKlelidy3DQIJyiefs2UnTXoAJlDP%3Dw152-h86-k-no!7i3920!8i2204!4m7!3m6!1s0x842545549746dffb:0xbf9b1768d294bd98!4b1!8m2!3d19.2416734!4d-103.7305672!16s%2Fg%2F1jmcl_vlk?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D"
@@ -422,28 +428,21 @@ export default function App() {
               <p className="text-sm opacity-60 mb-6">Su presencia es nuestro mejor regalo</p>
               
               <div className="space-y-4 w-full max-w-xs mx-auto">
-                {/* Liverpool */}
-                <div className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/10">
-                  <img 
-                    src="https://gcp-na-images.contentstack.com/v3/assets/blt339516d00dd80f86/blt8225505fe88f431b/673c926b0345b062aa3856c4/liverpool-logo-header.svg?branch=prod&format=avif&quality=80" 
-                    alt="Liverpool" 
-                    className="h-6 opacity-80"
-                    referrerPolicy="no-referrer"
-                  />
-                  <span className="text-xs font-mono tracking-wider">67584-894-094</span>
-                </div>
-                
-                {/* Sears */}
-                <div className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/10">
-                  <div className="text-sm font-bold tracking-tighter italic">SEARS</div>
-                  <span className="text-xs font-mono tracking-wider">834345934593453</span>
-                </div>
-
-                {/* Amazon / Other */}
-                <div className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/10">
-                  <div className="text-sm font-bold">AMAZON</div>
-                  <span className="text-xs font-mono tracking-wider">98765-432-100</span>
-                </div>
+                {WEDDING_CONFIG.giftRegistries.map((registry, idx) => (
+                  <div key={idx} className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/10">
+                    {registry.company === 'Liverpool' ? (
+                      <img 
+                        src="https://gcp-na-images.contentstack.com/v3/assets/blt339516d00dd80f86/blt8225505fe88f431b/673c926b0345b062aa3856c4/liverpool-logo-header.svg?branch=prod&format=avif&quality=80" 
+                        alt="Liverpool" 
+                        className="h-6 opacity-80"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="text-sm font-bold tracking-tighter italic uppercase">{registry.company}</div>
+                    )}
+                    <span className="text-xs font-mono tracking-wider">{registry.eventId}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -456,83 +455,108 @@ export default function App() {
           <div className="bg-cream p-8 md:p-12 rounded-[2rem] border border-stone-100 shadow-2xl shadow-stone-200/50">
             <SectionHeading title="Confirmar Asistencia" subtitle="RSVP" />
             
-            <AnimatePresence mode="wait">
-              {rsvpStatus === 'success' ? (
-                <motion.div 
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-12"
-                >
-                  <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-serif mb-2">¡Gracias por confirmar!</h3>
-                  <p className="text-stone-500">Estamos ansiosos por verte en nuestro gran día.</p>
-                  <button 
-                    onClick={() => setRsvpStatus('idle')}
-                    className="mt-8 text-sm text-gold underline"
-                  >
-                    Editar respuesta
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.form 
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onSubmit={handleRSVP}
-                  className="space-y-6"
-                >
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest opacity-60">Nombre Completo</label>
-                    <input 
-                      required
-                      type="text" 
-                      className="w-full bg-white border-b border-stone-200 py-3 px-4 focus:border-gold outline-none transition-colors"
-                      placeholder="Ej. Juan Pérez"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest opacity-60">¿Asistirás?</label>
-                    <div className="flex gap-4">
-                      <label className="flex-1 cursor-pointer">
-                        <input type="radio" name="attendance" className="hidden peer" defaultChecked />
-                        <div className="text-center py-3 border border-stone-200 peer-checked:border-gold peer-checked:bg-gold/5 rounded-xl transition-all">
-                          Sí, asistiré
-                        </div>
-                      </label>
-                      <label className="flex-1 cursor-pointer">
-                        <input type="radio" name="attendance" className="hidden peer" />
-                        <div className="text-center py-3 border border-stone-200 peer-checked:border-gold peer-checked:bg-gold/5 rounded-xl transition-all">
-                          No podré ir
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest opacity-60">Número de Invitados</label>
-                    <select className="w-full bg-white border-b border-stone-200 py-3 px-4 focus:border-gold outline-none transition-colors">
-                      <option>1 Persona</option>
-                      <option>2 Personas</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest opacity-60">Mensaje para los novios</label>
-                    <textarea 
-                      className="w-full bg-white border-b border-stone-200 py-3 px-4 focus:border-gold outline-none transition-colors h-24 resize-none"
-                      placeholder="Opcional..."
-                    ></textarea>
-                  </div>
-                  <button 
-                    disabled={rsvpStatus === 'submitting'}
-                    type="submit"
-                    className="w-full bg-stone-900 text-white py-4 rounded-xl uppercase tracking-widest text-sm hover:bg-stone-800 transition-colors disabled:opacity-50"
-                  >
-                    {rsvpStatus === 'submitting' ? 'Enviando...' : 'Confirmar Asistencia'}
-                  </button>
-                </motion.form>
+            <div className="mb-10">
+              <p className="text-center text-stone-500 text-sm mb-6">
+                Puedes confirmar rápidamente vía WhatsApp{WEDDING_CONFIG.showRsvpForm ? ' o llenando el formulario abajo' : ''}:
+              </p>
+              <a 
+                href={`https://wa.me/${WEDDING_CONFIG.rsvpWhatsAppNumber.replace('+', '')}?text=${encodeURIComponent(getWhatsAppMessage())}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 w-full bg-[#25D366] text-white py-4 rounded-xl uppercase tracking-widest text-sm font-bold hover:bg-[#20ba5a] transition-all shadow-lg shadow-green-100"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Confirmar Asistencia
+              </a>
+              
+              {WEDDING_CONFIG.showRsvpForm && (
+                <div className="flex items-center gap-4 my-8">
+                  <div className="flex-1 h-px bg-stone-200" />
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-stone-400">o usa el formulario</span>
+                  <div className="flex-1 h-px bg-stone-200" />
+                </div>
               )}
-            </AnimatePresence>
+            </div>
+
+            {WEDDING_CONFIG.showRsvpForm && (
+              <AnimatePresence mode="wait">
+                {rsvpStatus === 'success' ? (
+                  <motion.div 
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-12"
+                  >
+                    <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-serif mb-2">¡Gracias por confirmar!</h3>
+                    <p className="text-stone-500">Estamos ansiosos por verte en nuestro gran día.</p>
+                    <button 
+                      onClick={() => setRsvpStatus('idle')}
+                      className="mt-8 text-sm text-gold underline"
+                    >
+                      Editar respuesta
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.form 
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onSubmit={handleRSVP}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-widest opacity-60">Nombre Completo</label>
+                      <input 
+                        required
+                        type="text" 
+                        className="w-full bg-white border-b border-stone-200 py-3 px-4 focus:border-gold outline-none transition-colors"
+                        placeholder="Ej. Juan Pérez"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-widest opacity-60">¿Asistirás?</label>
+                      <div className="flex gap-4">
+                        <label className="flex-1 cursor-pointer">
+                          <input type="radio" name="attendance" className="hidden peer" defaultChecked />
+                          <div className="text-center py-3 border border-stone-200 peer-checked:border-gold peer-checked:bg-gold/5 rounded-xl transition-all">
+                            Sí, asistiré
+                          </div>
+                        </label>
+                        <label className="flex-1 cursor-pointer">
+                          <input type="radio" name="attendance" className="hidden peer" />
+                          <div className="text-center py-3 border border-stone-200 peer-checked:border-gold peer-checked:bg-gold/5 rounded-xl transition-all">
+                            No podré ir
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-widest opacity-60">Número de Invitados</label>
+                      <select className="w-full bg-white border-b border-stone-200 py-3 px-4 focus:border-gold outline-none transition-colors">
+                        <option>1 Persona</option>
+                        <option>2 Personas</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-widest opacity-60">Mensaje para los novios</label>
+                      <textarea 
+                        className="w-full bg-white border-b border-stone-200 py-3 px-4 focus:border-gold outline-none transition-colors h-24 resize-none"
+                        placeholder="Opcional..."
+                      ></textarea>
+                    </div>
+                    <button 
+                      disabled={rsvpStatus === 'submitting'}
+                      type="submit"
+                      className="w-full bg-stone-900 text-white py-4 rounded-xl uppercase tracking-widest text-sm hover:bg-stone-800 transition-colors disabled:opacity-50"
+                    >
+                      {rsvpStatus === 'submitting' ? 'Enviando...' : 'Confirmar Asistencia'}
+                    </button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            )}
           </div>
         </div>
       </section>
@@ -544,7 +568,7 @@ export default function App() {
           <Heart className="text-gold w-5 h-5" />
           <div className="w-8 h-px bg-gold/30 self-center" />
         </div>
-        <p className="font-serif text-2xl mb-2">Sylvana & Jose Carlos</p>
+        <p className="font-serif text-2xl mb-2">{WEDDING_CONFIG.brideName} & {WEDDING_CONFIG.groomName}</p>
         <p className="text-[10px] uppercase tracking-[0.3em] opacity-40">Hecho con amor • 2026</p>
       </footer>
 
