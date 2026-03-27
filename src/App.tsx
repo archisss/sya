@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calendar, 
@@ -129,22 +129,26 @@ export default function App() {
   const [rsvpStatus, setRsvpStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    // No auto-play on mount to respect browser/Spotify restrictions
-    // We only read the preference, but we don't force it until the user interacts
     const musicEnabled = localStorage.getItem('music-enabled');
-    if (musicEnabled === 'true') {
-      // If they had it on before, we could try to restore it, 
-      // but Spotify might still block it. Let's keep it off initially
-      // to force the user to click the button as requested.
-      // setIsMusicPlaying(true); 
+    // Si ya estaba habilitado, intentamos reproducir (aunque el navegador puede bloquearlo hasta el primer click)
+    if (musicEnabled === 'true' && !showWelcome) {
+      audioRef.current?.play().catch(() => {
+        setIsMusicPlaying(false);
+      });
     }
-  }, []);
+  }, [showWelcome]);
 
   const handleEnter = () => {
     setShowWelcome(false);
-    // No longer starting music automatically here to avoid Spotify blocking
+    setIsMusicPlaying(true);
+    localStorage.setItem('music-enabled', 'true');
+    // El click en "Entrar" es una interacción válida para iniciar el audio
+    setTimeout(() => {
+      audioRef.current?.play().catch(err => console.log("Autoplay blocked:", err));
+    }, 100);
   };
 
   const handleRSVP = (e: React.FormEvent) => {
@@ -195,22 +199,14 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Spotify Player */}
-      <div className="fixed bottom-8 left-8 z-50 transition-all duration-1000">
-        {isMusicPlaying && (
-          <iframe 
-            key={isMusicPlaying ? 'on' : 'off'} // 🔥 fuerza re-render limpio
-            style={{ borderRadius: '12px' }}
-            src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&theme=0&autoplay=1`} 
-            width="300" 
-            height="80" 
-            frameBorder="0" 
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy"
-            className="shadow-2xl border border-white/20"
-          />
-        )}
-      </div>
+      {/* Audio Element */}
+      <audio 
+        ref={audioRef}
+        src="/audio/wedding-music.mp3"
+        loop
+        preload="auto"
+      />
+
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-stone-900">
         <motion.div 
@@ -558,6 +554,12 @@ export default function App() {
           const newState = !isMusicPlaying;
           setIsMusicPlaying(newState);
           localStorage.setItem('music-enabled', newState ? 'true' : 'false');
+          
+          if (newState) {
+            audioRef.current?.play();
+          } else {
+            audioRef.current?.pause();
+          }
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
