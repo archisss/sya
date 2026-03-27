@@ -132,7 +132,11 @@ export default function App() {
 
   const handleEnter = () => {
     setShowWelcome(false);
-    setIsMusicPlaying(true);
+    // Forzamos la recarga del iframe después de un pequeño delay tras la interacción del usuario
+    setIsMusicPlaying(false);
+    setTimeout(() => {
+      setIsMusicPlaying(true);
+    }, 150);
   };
 
   const handleRSVP = (e: React.FormEvent) => {
@@ -192,8 +196,8 @@ export default function App() {
             width="300" 
             height="80" 
             frameBorder="0" 
-            allowFullScreen 
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            allowFullScreen 
             loading="lazy"
             className="shadow-2xl border border-white/20"
           ></iframe>
