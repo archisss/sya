@@ -5,6 +5,7 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --color-gold: #c5a059;
   --color-cream: #fdfbf7;
+  --animate-spin-slow: spin 8s linear infinite;
 }
 
 @layer base {

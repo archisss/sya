@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calendar, 
@@ -20,6 +20,10 @@ interface ItineraryItem {
   icon: React.ReactNode;
   side: 'left' | 'right';
 }
+
+// --- Constants ---
+const SPOTIFY_TRACK_ID = '0tgVpDi06FyKpA1z0VMD4v'; 
+// Puedes cambiar este ID por el de tu canción favorita
 
 // --- Components ---
 
@@ -120,6 +124,13 @@ const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string 
 export default function App() {
   const weddingDate = new Date('2026-05-30T17:00:00');
   const [rsvpStatus, setRsvpStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  const handleEnter = () => {
+    setShowWelcome(false);
+    setIsMusicPlaying(true);
+  };
 
   const handleRSVP = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,6 +149,46 @@ export default function App() {
 
   return (
     <div className="min-h-screen selection:bg-gold/20">
+      <AnimatePresence>
+        {showWelcome && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-stone-900 flex items-center justify-center text-center px-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="max-w-md"
+            >
+              <Heart className="w-12 h-12 text-gold mx-auto mb-8 animate-pulse" />
+              <h1 className="text-4xl md:text-6xl font-serif text-white mb-4">Sylvana & Jose Carlos</h1>
+              <p className="text-stone-400 font-serif italic text-lg mb-12">Nuestra Boda • 30 de Mayo, 2026</p>
+              <button 
+                onClick={handleEnter}
+                className="px-12 py-4 bg-gold text-stone-900 rounded-full uppercase tracking-[0.3em] text-xs font-bold hover:bg-white transition-all duration-500 shadow-2xl"
+              >
+                Entrar a la Invitación
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Spotify Player (Hidden/Floating) */}
+      <div className={`fixed bottom-24 right-8 z-50 transition-all duration-500 ${isMusicPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
+        <iframe 
+          style={{ borderRadius: '12px' }}
+          src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&theme=0`} 
+          width="300" 
+          height="80" 
+          frameBorder="0" 
+          allowFullScreen 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy"
+        ></iframe>
+      </div>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-stone-900">
         <motion.div 
@@ -215,7 +266,7 @@ export default function App() {
                 className={`aspect-[3/4] overflow-hidden rounded-2xl ${i % 2 === 0 ? 'mt-8' : ''}`}
               >
                 <img 
-                  src={`/images/gallery/foto${i}.jpg`} 
+                  src={`/images/gallery/foto${i}.jpeg`} 
                   alt={`Gallery ${i}`}
                   onError={(e) => {
                     // Fallback a imagen de ejemplo si no existe la foto local
@@ -280,7 +331,9 @@ export default function App() {
           <SectionHeading title="Itinerario" subtitle="Nuestra Celebración" />
           <div className="mt-16">
             {itinerary.map((item, idx) => (
-              <TimelineItem key={idx} item={item} isLast={idx === itinerary.length - 1} />
+              <div key={idx}>
+                <TimelineItem item={item} isLast={idx === itinerary.length - 1} />
+              </div>
             ))}
           </div>
         </div>
@@ -482,13 +535,14 @@ export default function App() {
         <p className="text-[10px] uppercase tracking-[0.3em] opacity-40">Hecho con amor • 2026</p>
       </footer>
 
-      {/* Floating Music Button (Simulated) */}
+      {/* Floating Music Button */}
       <motion.button 
+        onClick={() => setIsMusicPlaying(!isMusicPlaying)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center text-gold z-50 border border-stone-100"
+        className={`fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center z-50 border border-stone-100 shadow-lg transition-all duration-500 ${isMusicPlaying ? 'bg-gold text-stone-900' : 'bg-white text-gold'}`}
       >
-        <Music className="w-5 h-5" />
+        <Music className={`w-5 h-5 ${isMusicPlaying ? 'animate-spin-slow' : ''}`} />
       </motion.button>
     </div>
   );
