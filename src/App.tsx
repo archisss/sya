@@ -22,7 +22,7 @@ interface ItineraryItem {
 }
 
 // --- Constants ---
-const SPOTIFY_TRACK_ID = '0tgVpDi06FyKpA1z0VMD4v'; 
+const SPOTIFY_TRACK_ID = 'e425df48ce434f28'; 
 // Puedes cambiar este ID por el de tu canción favorita
 
 // --- Components ---
