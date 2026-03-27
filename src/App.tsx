@@ -129,7 +129,10 @@ export default function App() {
 
   const handleEnter = () => {
     setShowWelcome(false);
-    setIsMusicPlaying(true);
+    // Pequeño retraso para asegurar que la interacción del usuario se registre
+    setTimeout(() => {
+      setIsMusicPlaying(true);
+    }, 100);
   };
 
   const handleRSVP = (e: React.FormEvent) => {
@@ -163,10 +166,10 @@ export default function App() {
               className="max-w-md"
             >
               <Heart className="w-12 h-12 text-gold mx-auto mb-8 animate-pulse" />
-              <h1 className="text-4xl md:text-6xl font-serif text-white mb-4 leading-tight">
+              <h1 className="text-5xl md:text-7xl font-script text-white mb-4 leading-tight">
                 Sylvana <br /> 
-                <span className="text-2xl md:text-4xl opacity-50">&</span> <br /> 
-                jose carlos
+                <span className="text-2xl md:text-4xl font-serif opacity-50">&</span> <br /> 
+                Jose Carlos
               </h1>
               <p className="text-stone-400 font-serif italic text-lg mb-12">Nuestra Boda • 30 de Mayo, 2026</p>
               <button 
@@ -184,6 +187,7 @@ export default function App() {
       <div className="fixed bottom-0 right-0 opacity-0 pointer-events-none z-0">
         {isMusicPlaying && (
           <iframe 
+            key="spotify-player"
             style={{ borderRadius: '12px' }}
             src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&theme=0&autoplay=1`} 
             width="300" 
@@ -191,7 +195,6 @@ export default function App() {
             frameBorder="0" 
             allowFullScreen 
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy"
           ></iframe>
         )}
       </div>
@@ -239,15 +242,10 @@ export default function App() {
             <div className="flex gap-4">
               <a 
                 href="#rsvp"
-                className="px-8 py-3 bg-white text-stone-900 rounded-full text-xs uppercase tracking-widest hover:bg-gold hover:text-white transition-all"
+                className="px-12 py-4 bg-white text-stone-900 rounded-full text-xs uppercase tracking-widest hover:bg-gold hover:text-white transition-all shadow-xl"
               >
                 Confirmar Asistencia
               </a>
-              <button 
-                className="px-8 py-3 border border-white/30 text-white rounded-full text-xs uppercase tracking-widest hover:bg-white/10 transition-all"
-              >
-                Guardar Fecha
-              </button>
             </div>
             <motion.div 
               animate={{ y: [0, 10, 0] }}
@@ -311,7 +309,7 @@ export default function App() {
             className="mb-12 rounded-2xl overflow-hidden shadow-2xl border-8 border-white max-w-2xl mx-auto"
           >
             <img 
-              src="/images/historia.jpg" 
+              src="/images/proposal/historia.jpg" 
               alt="Nuestra Historia" 
               onError={(e) => {
                 (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=1200";
@@ -370,7 +368,7 @@ export default function App() {
             </div>
             <div className="md:w-1/2 h-80 md:h-auto relative">
               <img 
-                src="/images/lugar.jpg" 
+                src="/images/venue/lugar.jpg" 
                 alt="Las Cavas de Don José"
                 onError={(e) => {
                   // Fallback a la imagen que te gustó si no has subido la tuya
