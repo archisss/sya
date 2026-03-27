@@ -130,14 +130,17 @@ export default function App() {
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
 
+  useEffect(() => {
+  const musicEnabled = localStorage.getItem('music-enabled');
+  if (musicEnabled === 'true') {
+      setIsMusicPlaying(true);
+    }
+  }, []);
+
   const handleEnter = () => {
     setShowWelcome(false);
-    // Forzamos la recarga del iframe después de un pequeño delay tras la interacción del usuario
-    setIsMusicPlaying(false);
-    setTimeout(() => {
-      setIsMusicPlaying(true);
-      console.log("music playing");
-    }, 3000);
+    setIsMusicPlaying(true);
+    localStorage.setItem('music-enabled', 'true');
   };
 
   const handleRSVP = (e: React.FormEvent) => {
@@ -192,16 +195,16 @@ export default function App() {
       <div className="fixed bottom-8 left-8 z-50 transition-all duration-1000">
         {isMusicPlaying && (
           <iframe 
+            key={isMusicPlaying ? 'on' : 'off'} // 🔥 fuerza re-render limpio
             style={{ borderRadius: '12px' }}
             src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&theme=0&autoplay=1`} 
             width="300" 
             height="80" 
             frameBorder="0" 
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            allowFullScreen 
             loading="lazy"
             className="shadow-2xl border border-white/20"
-          ></iframe>
+          />
         )}
       </div>
       {/* Hero Section */}
@@ -547,17 +550,18 @@ export default function App() {
 
       {/* Floating Music Button */}
       <motion.button 
-        onClick={() => setIsMusicPlaying(!isMusicPlaying)}
+        onClick={() => {
+          const newState = !isMusicPlaying;
+          setIsMusicPlaying(newState);
+          localStorage.setItem('music-enabled', newState ? 'true' : 'false');
+        }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className={`fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center z-50 border border-stone-100 shadow-lg transition-all duration-500 ${isMusicPlaying ? 'bg-gold text-stone-900' : 'bg-white text-gold'}`}
-        title={isMusicPlaying ? "Mute" : "Unmute"}
+        className={`fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center z-50 border border-stone-100 shadow-lg transition-all duration-500 ${
+          isMusicPlaying ? 'bg-gold text-stone-900' : 'bg-white text-gold'
+        }`}
       >
-        {isMusicPlaying ? (
-          <Music className="w-5 h-5 animate-spin-slow" />
-        ) : (
-          <Music className="w-5 h-5 opacity-40" />
-        )}
+        <Music className={`w-5 h-5 ${isMusicPlaying ? 'animate-spin-slow' : 'opacity-40'}`} />
       </motion.button>
     </div>
   );
