@@ -1,0 +1,5 @@
+{
+  "name": "Invitación de Boda Digital",
+  "description": "Una elegante invitación digital para bodas con cuenta regresiva, detalles del evento, mapa y confirmación de asistencia (RSVP).",
+  "requestFramePermissions": ["geolocation"]
+}
