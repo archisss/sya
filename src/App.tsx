@@ -163,7 +163,11 @@ export default function App() {
               className="max-w-md"
             >
               <Heart className="w-12 h-12 text-gold mx-auto mb-8 animate-pulse" />
-              <h1 className="text-4xl md:text-6xl font-serif text-white mb-4">Sylvana & Jose Carlos</h1>
+              <h1 className="text-4xl md:text-6xl font-serif text-white mb-4 leading-tight">
+                Sylvana <br /> 
+                <span className="text-2xl md:text-4xl opacity-50">&</span> <br /> 
+                jose carlos
+              </h1>
               <p className="text-stone-400 font-serif italic text-lg mb-12">Nuestra Boda • 30 de Mayo, 2026</p>
               <button 
                 onClick={handleEnter}
@@ -176,18 +180,20 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Spotify Player (Hidden/Floating) */}
-      <div className={`fixed bottom-24 right-8 z-50 transition-all duration-500 ${isMusicPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
-        <iframe 
-          style={{ borderRadius: '12px' }}
-          src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&theme=0`} 
-          width="300" 
-          height="80" 
-          frameBorder="0" 
-          allowFullScreen 
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-          loading="lazy"
-        ></iframe>
+      {/* Spotify Player (Hidden) */}
+      <div className="fixed bottom-0 right-0 opacity-0 pointer-events-none z-0">
+        {isMusicPlaying && (
+          <iframe 
+            style={{ borderRadius: '12px' }}
+            src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&theme=0&autoplay=1`} 
+            width="300" 
+            height="80" 
+            frameBorder="0" 
+            allowFullScreen 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy"
+          ></iframe>
+        )}
       </div>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-stone-900">
@@ -541,8 +547,13 @@ export default function App() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         className={`fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center z-50 border border-stone-100 shadow-lg transition-all duration-500 ${isMusicPlaying ? 'bg-gold text-stone-900' : 'bg-white text-gold'}`}
+        title={isMusicPlaying ? "Mute" : "Unmute"}
       >
-        <Music className={`w-5 h-5 ${isMusicPlaying ? 'animate-spin-slow' : ''}`} />
+        {isMusicPlaying ? (
+          <Music className="w-5 h-5 animate-spin-slow" />
+        ) : (
+          <Music className="w-5 h-5 opacity-40" />
+        )}
       </motion.button>
     </div>
   );
