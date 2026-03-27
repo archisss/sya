@@ -22,7 +22,7 @@ interface ItineraryItem {
 }
 
 // --- Constants ---
-const SPOTIFY_TRACK_ID = 'e425df48ce434f28'; 
+const SPOTIFY_TRACK_ID = '0tgVpDi06FyKpA1z0VMD4v'; 
 // Puedes cambiar este ID por el de tu canción favorita
 
 // --- Components ---
@@ -129,10 +129,7 @@ export default function App() {
 
   const handleEnter = () => {
     setShowWelcome(false);
-    // Pequeño retraso para asegurar que la interacción del usuario se registre
-    setTimeout(() => {
-      setIsMusicPlaying(true);
-    }, 100);
+    setIsMusicPlaying(true);
   };
 
   const handleRSVP = (e: React.FormEvent) => {
@@ -183,11 +180,10 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Spotify Player (Hidden) */}
-      <div className="fixed bottom-0 right-0 opacity-0 pointer-events-none z-0">
+      {/* Spotify Player */}
+      <div className="fixed bottom-8 left-8 z-50 transition-all duration-1000">
         {isMusicPlaying && (
           <iframe 
-            key="spotify-player"
             style={{ borderRadius: '12px' }}
             src={`https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&theme=0&autoplay=1`} 
             width="300" 
@@ -195,6 +191,8 @@ export default function App() {
             frameBorder="0" 
             allowFullScreen 
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy"
+            className="shadow-2xl border border-white/20"
           ></iframe>
         )}
       </div>
@@ -270,7 +268,7 @@ export default function App() {
                 className={`aspect-[3/4] overflow-hidden rounded-2xl ${i % 2 === 0 ? 'mt-8' : ''}`}
               >
                 <img 
-                  src={`/images/gallery/foto${i}.jpeg`} 
+                  src={`/images/gallery/foto${i}.jpg`} 
                   alt={`Gallery ${i}`}
                   onError={(e) => {
                     // Fallback a imagen de ejemplo si no existe la foto local
