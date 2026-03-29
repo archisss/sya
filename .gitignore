@@ -6,3 +6,14 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Images
+public/images/
+public/audio/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.svg
+*.mp3
