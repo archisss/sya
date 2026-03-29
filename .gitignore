@@ -7,9 +7,13 @@ coverage/
 .env*
 !.env.example
 
-# Images
-public/images/
-public/audio/
+# Images and Audio
+public/images/**/*
+!public/images/**/.gitkeep
+public/audio/**/*
+!public/audio/**/.gitkeep
+
+# Global extensions (optional, but good for safety)
 *.jpg
 *.jpeg
 *.png
