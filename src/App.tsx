@@ -11,7 +11,9 @@ import {
   CheckCircle2,
   ChevronDown,
   Users,
-  MessageCircle
+  MessageCircle,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { WEDDING_CONFIG, getWhatsAppMessage } from './config';
 
@@ -139,12 +141,52 @@ export default function App() {
 
   useEffect(() => {
     const musicEnabled = localStorage.getItem('music-enabled');
-    // Si ya estaba habilitado, intentamos reproducir (aunque el navegador puede bloquearlo hasta el primer click)
-    if (musicEnabled === 'true' && !showWelcome) {
-      audioRef.current?.play().catch(() => {
-        setIsMusicPlaying(false);
-      });
+    
+    const attemptPlay = () => {
+      if (audioRef.current && (musicEnabled === 'true' || musicEnabled === null)) {
+        // Intentamos reproducir con sonido
+        audioRef.current.play()
+          .then(() => {
+            audioRef.current!.muted = false;
+            localStorage.setItem('music-enabled', 'true');
+            cleanupListeners();
+          })
+          .catch(() => {
+            // Si el navegador bloquea el sonido, intentamos reproducir MUTEADO
+            // (Muchos navegadores permiten autoplay si está en silencio)
+            if (audioRef.current) {
+              audioRef.current.muted = true;
+              audioRef.current.play()
+                .then(() => {
+                  console.log("Playing muted as fallback...");
+                })
+                .catch(e => console.log("Even muted autoplay failed:", e));
+            }
+          });
+      }
+    };
+
+    const cleanupListeners = () => {
+      const events = ['click', 'touchstart', 'touchend', 'mousedown', 'keydown', 'scroll'];
+      events.forEach(e => window.removeEventListener(e, handleInteraction));
+    };
+
+    const handleInteraction = () => {
+      if (audioRef.current) {
+        audioRef.current.muted = false;
+        attemptPlay();
+      }
+    };
+
+    if (!WEDDING_CONFIG.showWelcomeScreen || !showWelcome) {
+      const events = ['click', 'touchstart', 'touchend', 'mousedown', 'keydown', 'scroll'];
+      events.forEach(e => window.addEventListener(e, handleInteraction));
+      attemptPlay();
     }
+
+    return () => {
+      cleanupListeners();
+    };
   }, [showWelcome]);
 
   const handleEnter = () => {
@@ -212,6 +254,9 @@ export default function App() {
         src="/audio/wedding-music.mp3"
         loop
         preload="auto"
+        onPlay={() => setIsMusicPlaying(true)}
+        onPause={() => setIsMusicPlaying(false)}
+        onError={(e) => console.error("Audio file error:", e)}
       />
 
       {/* Hero Section */}
@@ -575,19 +620,28 @@ export default function App() {
       {/* Floating Music Button */}
       <motion.button 
         onClick={() => {
-          const newState = !isMusicPlaying;
-          setIsMusicPlaying(newState);
-          localStorage.setItem('music-enabled', newState ? 'true' : 'false');
-          
-          if (newState) {
-            audioRef.current?.play();
-          } else {
-            audioRef.current?.pause();
+          if (audioRef.current) {
+            if (isMusicPlaying) {
+              if (audioRef.current.muted) {
+                audioRef.current.muted = false;
+                // Forzamos actualización de UI
+                const temp = isMusicPlaying;
+                setIsMusicPlaying(!temp);
+                setTimeout(() => setIsMusicPlaying(temp), 10);
+              } else {
+                audioRef.current.pause();
+                localStorage.setItem('music-enabled', 'false');
+              }
+            } else {
+              audioRef.current.muted = false;
+              audioRef.current.play();
+              localStorage.setItem('music-enabled', 'true');
+            }
           }
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        animate={!isMusicPlaying ? {
+        animate={!isMusicPlaying || audioRef.current?.muted ? {
           scale: [1, 1.1, 1],
           boxShadow: [
             "0 0 0 0px rgba(212, 175, 55, 0)",
@@ -595,16 +649,20 @@ export default function App() {
             "0 0 0 0px rgba(212, 175, 55, 0)"
           ]
         } : {}}
-        transition={!isMusicPlaying ? {
+        transition={(!isMusicPlaying || audioRef.current?.muted) ? {
           duration: 2,
           repeat: Infinity,
           ease: "easeInOut"
         } : {}}
         className={`fixed bottom-8 right-8 w-12 h-12 rounded-full flex items-center justify-center z-50 border border-stone-100 shadow-lg transition-all duration-500 ${
-          isMusicPlaying ? 'bg-gold text-stone-900' : 'bg-white text-gold'
+          isMusicPlaying && !audioRef.current?.muted ? 'bg-gold text-stone-900' : 'bg-white text-gold'
         }`}
       >
-        <Music className={`w-5 h-5 ${isMusicPlaying ? 'animate-spin-slow' : 'opacity-40'}`} />
+        {isMusicPlaying ? (
+          audioRef.current?.muted ? <VolumeX className="w-5 h-5 animate-pulse" /> : <Music className="w-5 h-5 animate-spin-slow" />
+        ) : (
+          <Volume2 className="w-5 h-5 opacity-40" />
+        )}
       </motion.button>
     </div>
   );
