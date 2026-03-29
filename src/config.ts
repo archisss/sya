@@ -20,7 +20,7 @@ export const WEDDING_CONFIG = {
   ],
   rsvpWhatsAppNumber: "+523122102848",
   showRsvpForm: false, // Set to true to show the form, false to hide it
-  showWelcomeScreen: true, // Set to true to show the welcome screen, false to skip it
+  showWelcomeScreen: false, // Set to true to show the welcome screen, false to skip it
   coupleInitials: "SyJC",
 };
 
@@ -29,4 +29,11 @@ export const getWhatsAppMessage = () => {
   const day = date.getDate();
   const month = date.toLocaleString('es-ES', { month: 'long' });
   return `Hola me gustaría confirmar mi asistencia a la boda de ${WEDDING_CONFIG.brideName} y ${WEDDING_CONFIG.groomName} el ${day} de ${month}`;
+};
+
+export const getWhatsAppNoMessage = () => {
+  const date = new Date(WEDDING_CONFIG.weddingDate);
+  const day = date.getDate();
+  const month = date.toLocaleString('es-ES', { month: 'long' });
+  return `Hola NO podre asistir a la boda de ${WEDDING_CONFIG.brideName} y ${WEDDING_CONFIG.groomName} el ${day} de ${month}`;
 };

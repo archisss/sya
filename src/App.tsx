@@ -15,7 +15,7 @@ import {
   Volume2,
   VolumeX
 } from 'lucide-react';
-import { WEDDING_CONFIG, getWhatsAppMessage } from './config';
+import { WEDDING_CONFIG, getWhatsAppMessage, getWhatsAppNoMessage } from './config';
 
 // --- Types ---
 interface ItineraryItem {
@@ -142,12 +142,16 @@ export default function App() {
   useEffect(() => {
     const musicEnabled = localStorage.getItem('music-enabled');
     
+    // Si es la primera vez (null), por defecto queremos que suene
+    const shouldPlay = musicEnabled === 'true' || musicEnabled === null;
+
     const attemptPlay = () => {
-      if (audioRef.current && (musicEnabled === 'true' || musicEnabled === null)) {
+      if (audioRef.current && shouldPlay) {
         // Intentamos reproducir con sonido
         audioRef.current.play()
           .then(() => {
             audioRef.current!.muted = false;
+            setIsMusicPlaying(true);
             localStorage.setItem('music-enabled', 'true');
             cleanupListeners();
           })
@@ -159,6 +163,7 @@ export default function App() {
               audioRef.current.play()
                 .then(() => {
                   console.log("Playing muted as fallback...");
+                  setIsMusicPlaying(true);
                 })
                 .catch(e => console.log("Even muted autoplay failed:", e));
             }
@@ -173,14 +178,18 @@ export default function App() {
 
     const handleInteraction = () => {
       if (audioRef.current) {
+        // Al interactuar, quitamos el silencio y reproducimos
         audioRef.current.muted = false;
         attemptPlay();
       }
     };
 
+    // Si la bienvenida está desactivada, escuchamos la primera interacción
     if (!WEDDING_CONFIG.showWelcomeScreen || !showWelcome) {
       const events = ['click', 'touchstart', 'touchend', 'mousedown', 'keydown', 'scroll'];
       events.forEach(e => window.addEventListener(e, handleInteraction));
+      
+      // Intento inicial (puede fallar con sonido, pero funcionar muteado)
       attemptPlay();
     }
 
@@ -508,10 +517,20 @@ export default function App() {
                 href={`https://wa.me/${WEDDING_CONFIG.rsvpWhatsAppNumber.replace('+', '')}?text=${encodeURIComponent(getWhatsAppMessage())}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 w-full bg-[#25D366] text-white py-4 rounded-xl uppercase tracking-widest text-sm font-bold hover:bg-[#20ba5a] transition-all shadow-lg shadow-green-100"
+                className="flex items-center justify-center gap-3 w-full bg-[#25D366] text-white py-4 rounded-xl uppercase tracking-widest text-sm font-bold hover:bg-[#20ba5a] transition-all shadow-lg shadow-green-100 mb-4"
               >
                 <MessageCircle className="w-5 h-5" />
                 Confirmar Asistencia
+              </a>
+
+              <a 
+                href={`https://wa.me/${WEDDING_CONFIG.rsvpWhatsAppNumber.replace('+', '')}?text=${encodeURIComponent(getWhatsAppNoMessage())}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 w-full bg-[#b81226] text-white py-4 rounded-xl uppercase tracking-widest text-sm font-bold hover:opacity-90 transition-all shadow-lg shadow-red-100"
+              >
+                <MessageCircle className="w-5 h-5" />
+                No podré asistir
               </a>
               
               {WEDDING_CONFIG.showRsvpForm && (
