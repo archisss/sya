@@ -14,13 +14,18 @@ export const WEDDING_CONFIG = {
   locationName: "Las Cavas de Don José",
   locationAddress: "Gildardo Gómez 128959, Las Huertas, 28000 Colima, Col., México.",
   giftRegistries: [
-    { company: "Liverpool", eventId: "67584-894-094" },
-    { company: "Sears", eventId: "834345934593453" },
-    { company: "Amazon", eventId: "98765-432-100" },
+    { company: "Liverpool", eventId: "51978819", show: true },
+    { company: "Sears", eventId: "245304", show: true },
+    { company: "Amazon", eventId: "98765-432-100", show: false },
   ],
+  bankTransfer: {
+    show: true,
+    accountHolder: "Martha Sylvana Aguirre Verduzco",
+    clabe: "012090029858964364"
+  },
   rsvpWhatsAppNumber: "+523122102848",
   showRsvpForm: false, // Set to true to show the form, false to hide it
-  showWelcomeScreen: true, // Set to true to show the welcome screen, false to skip it
+  showWelcomeScreen: false, // Set to true to show the welcome screen, false to skip it
   coupleInitials: "SyJC",
 };
 

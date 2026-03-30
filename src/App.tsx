@@ -13,7 +13,8 @@ import {
   Users,
   MessageCircle,
   Volume2,
-  VolumeX
+  VolumeX,
+  CreditCard
 } from 'lucide-react';
 import { WEDDING_CONFIG, getWhatsAppMessage, getWhatsAppNoMessage } from './config';
 
@@ -464,7 +465,7 @@ export default function App() {
       <section className="py-24 bg-stone-900 text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <SectionHeading title="Información Importante" subtitle="Protocolo" />
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
             <div className="flex flex-col items-center">
               <Info className="w-8 h-8 text-gold mb-4" />
               <h4 className="text-xl font-serif mb-2">Código de Vestimenta</h4>
@@ -482,7 +483,7 @@ export default function App() {
               <p className="text-sm opacity-60 mb-6">Su presencia es nuestro mejor regalo</p>
               
               <div className="space-y-4 w-full max-w-xs mx-auto">
-                {WEDDING_CONFIG.giftRegistries.map((registry, idx) => (
+                {WEDDING_CONFIG.giftRegistries.filter(r => (r as any).show).map((registry, idx) => (
                   <div key={idx} className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/10">
                     {registry.company === 'Liverpool' ? (
                       <img 
@@ -499,6 +500,19 @@ export default function App() {
                 ))}
               </div>
             </div>
+            {WEDDING_CONFIG.bankTransfer.show && (
+              <div className="flex flex-col items-center">
+                <CreditCard className="w-8 h-8 text-gold mb-4" />
+                <h4 className="text-xl font-serif mb-2">Cuenta Bancaria</h4>
+                <p className="text-sm opacity-60 mb-4">Si desean tener un detalle con nosotros</p>
+                <div className="bg-white/5 p-4 rounded-lg border border-white/10 w-full max-w-xs text-center">
+                  <p className="text-[10px] uppercase tracking-widest opacity-40 mb-1">Titular</p>
+                  <p className="text-sm mb-3">{WEDDING_CONFIG.bankTransfer.accountHolder}</p>
+                  <p className="text-[10px] uppercase tracking-widest opacity-40 mb-1">CLABE</p>
+                  <p className="text-xs font-mono tracking-wider">{WEDDING_CONFIG.bankTransfer.clabe}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
