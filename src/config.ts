@@ -25,7 +25,7 @@ export const WEDDING_CONFIG = {
   },
   rsvpWhatsAppNumber: "+523122102848",
   showRsvpForm: false, // Set to true to show the form, false to hide it
-  showWelcomeScreen: false, // Set to true to show the welcome screen, false to skip it
+  showWelcomeScreen: true, // Set to true to show the welcome screen, false to skip it
   coupleInitials: "SyJC",
 };
 
