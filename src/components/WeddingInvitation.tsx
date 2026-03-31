@@ -15,7 +15,8 @@ import {
   MessageCircle,
   Volume2,
   VolumeX,
-  CreditCard
+  CreditCard,
+  Mail
 } from 'lucide-react';
 import { WEDDING_CONFIG, getWhatsAppMessage, getWhatsAppNoMessage } from '../config';
 
@@ -267,7 +268,10 @@ const WeddingInvitation = () => {
               transition={{ delay: 0.5 }}
               className="max-w-md"
             >
-              <Heart className="w-12 h-12 text-gold mx-auto mb-8 animate-pulse" />
+              <div className="relative w-16 h-16 mx-auto mb-8">
+                <Mail className="w-16 h-16 text-gold" />
+                <Heart className="w-6 h-6 text-gold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 fill-gold animate-pulse" />
+              </div>
               <h1 className="text-5xl md:text-7xl font-script text-white mb-4 leading-tight">
                 {WEDDING_CONFIG.brideName} <br /> 
                 <span className="text-2xl md:text-4xl font-serif opacity-50">&</span> <br /> 
