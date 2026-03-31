@@ -31,12 +31,12 @@ export const WEDDING_CONFIG = {
     show: true,
     title: "Con la Bendición de Dios y nuestros padres",
     brideParents: [
-      { name: "Martha Lorena Verduzco LLamas", isDeceased: false },
+      { name: "Martha Lorena Verduzco Llamas", isDeceased: false },
       { name: "Oswaldo Aguirre Campos", isDeceased: true }
     ],
     groomParents: [
-      { name: "Ma. Blanca Esthela Chavez Barragan", isDeceased: false },
-      { name: "Jose Anaya Morales", isDeceased: false }
+      { name: "Ma. Blanca Esthela Chávez Barrágan", isDeceased: false },
+      { name: "José Anaya Morales", isDeceased: false }
     ]
   }
 };
