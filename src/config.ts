@@ -11,15 +11,19 @@ export const WEDDING_CONFIG = {
     { time: "11:00 pm", title: "Fiesta", subtitle: "", side: 'left' as const, type: 'party' },
     { time: "02:00 am", title: "Fin de fiesta", subtitle: "", side: 'right' as const, type: 'end' },
   ],
+  churchName: "Parroquia del Espíritu Santo",
+  churchAddress: "Felipe Sevilla del Río",
+  churchMapsLink: "https://www.google.com/maps/search/?api=1&query=Parroquia+del+Espiritu+Santo+Colima+Felipe+Sevilla+del+Rio",
   locationName: "Las Cavas de Don José",
   locationAddress: "Gildardo Gómez 128959, Las Huertas, 28000 Colima, Col., México.",
   giftRegistries: [
-    { company: "Liverpool", eventId: "51978819", show: true },
-    { company: "Sears", eventId: "245304", show: true },
+    { company: "Liverpool", eventId: "51978819", url: "https://mesaderegalos.liverpool.com.mx/milistaderegalos/51978819", show: true },
+    { company: "Sears", eventId: "245304", url: "https://www.sears.com.mx/Mesa-de-Regalos/245304/Te-invito-a-mi-Boda---marha-sylvana-&-JOSE-CARLOS", show: true },
     { company: "Amazon", eventId: "98765-432-100", show: false },
   ],
   bankTransfer: {
     show: true,
+    bank: "BBVA",
     accountHolder: "Martha Sylvana Aguirre Verduzco",
     clabe: "012090029858964364"
   },
@@ -31,12 +35,12 @@ export const WEDDING_CONFIG = {
     show: true,
     title: "Con la Bendición de Dios y nuestros padres",
     brideParents: [
-      { name: "Martha Lorena Verduzco Llamas", isDeceased: false },
+      { name: "Martha Lorena Verduzco LLamas", isDeceased: false },
       { name: "Oswaldo Aguirre Campos", isDeceased: true }
     ],
     groomParents: [
-      { name: "Ma. Blanca Esthela Chávez Barrágan", isDeceased: false },
-      { name: "José Anaya Morales", isDeceased: false }
+      { name: "Ma. Blanca Esthela Chavez Barragan", isDeceased: false },
+      { name: "Jose Anaya Morales", isDeceased: false }
     ]
   }
 };

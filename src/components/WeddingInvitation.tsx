@@ -38,6 +38,7 @@ interface ItineraryItem {
   subtitle?: string;
   icon: React.ReactNode;
   side: 'left' | 'right';
+  link?: string;
 }
 
 // --- Components ---
@@ -57,7 +58,20 @@ const TimelineItem = ({ item, isLast }: { item: ItineraryItem; isLast: boolean }
           <div className="order-2">
             <p className="text-gold font-serif italic text-lg">{item.time}</p>
             <h4 className="text-xl font-serif text-stone-800">{item.title}</h4>
-            {item.subtitle && <p className="text-sm text-stone-500 mt-1">{item.subtitle}</p>}
+            {item.subtitle && (
+              item.link ? (
+                <a 
+                  href={item.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-sm text-stone-500 mt-1 hover:text-gold transition-colors block underline underline-offset-4"
+                >
+                  {item.subtitle}
+                </a>
+              ) : (
+                <p className="text-sm text-stone-500 mt-1">{item.subtitle}</p>
+              )
+            )}
           </div>
           <div className="order-1 text-stone-400">
             {item.icon}
@@ -74,7 +88,20 @@ const TimelineItem = ({ item, isLast }: { item: ItineraryItem; isLast: boolean }
           <div>
             <p className="text-gold font-serif italic text-lg">{item.time}</p>
             <h4 className="text-xl font-serif text-stone-800">{item.title}</h4>
-            {item.subtitle && <p className="text-sm text-stone-500 mt-1">{item.subtitle}</p>}
+            {item.subtitle && (
+              item.link ? (
+                <a 
+                  href={item.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-sm text-stone-500 mt-1 hover:text-gold transition-colors block underline underline-offset-4"
+                >
+                  {item.subtitle}
+                </a>
+              ) : (
+                <p className="text-sm text-stone-500 mt-1">{item.subtitle}</p>
+              )
+            )}
           </div>
         </div>
       </div>
@@ -221,7 +248,8 @@ const WeddingInvitation = () => {
           item.type === 'toast' ? <Music className="w-6 h-6" /> :
           item.type === 'dance' ? <Heart className="w-6 h-6" /> :
           item.type === 'party' ? <Music className="w-6 h-6" /> :
-          <Clock className="w-6 h-6" />
+          <Clock className="w-6 h-6" />,
+    link: item.type === 'ceremony' ? (WEDDING_CONFIG as any).churchMapsLink : undefined
   }));
 
   return (
@@ -534,7 +562,13 @@ const WeddingInvitation = () => {
               
               <div className="space-y-4 w-full max-w-xs mx-auto">
                 {WEDDING_CONFIG.giftRegistries.filter(r => (r as any).show).map((registry, idx) => (
-                  <div key={idx} className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/10">
+                  <a 
+                    key={idx} 
+                    href={(registry as any).url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/10 hover:bg-white/10 transition-all cursor-pointer"
+                  >
                     {registry.company === 'Liverpool' ? (
                       <img 
                         src="https://gcp-na-images.contentstack.com/v3/assets/blt339516d00dd80f86/blt8225505fe88f431b/673c926b0345b062aa3856c4/liverpool-logo-header.svg?branch=prod&format=avif&quality=80" 
@@ -546,7 +580,7 @@ const WeddingInvitation = () => {
                       <div className="text-sm font-bold tracking-tighter italic uppercase">{registry.company}</div>
                     )}
                     <span className="text-xs font-mono tracking-wider">{registry.eventId}</span>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
@@ -556,6 +590,8 @@ const WeddingInvitation = () => {
                 <h4 className="text-xl font-serif mb-2">Cuenta Bancaria</h4>
                 <p className="text-sm opacity-60 mb-4">Si desean tener un detalle con nosotros</p>
                 <div className="bg-white/5 p-4 rounded-lg border border-white/10 w-full max-w-xs text-center">
+                  <p className="text-[10px] uppercase tracking-widest opacity-40 mb-1">Banco</p>
+                  <p className="text-sm mb-3">{(WEDDING_CONFIG.bankTransfer as any).bank}</p>
                   <p className="text-[10px] uppercase tracking-widest opacity-40 mb-1">Titular</p>
                   <p className="text-sm mb-3">{WEDDING_CONFIG.bankTransfer.accountHolder}</p>
                   <p className="text-[10px] uppercase tracking-widest opacity-40 mb-1">CLABE</p>
