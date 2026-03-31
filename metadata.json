@@ -1,5 +1,5 @@
 {
-  "name": "Invitación de Boda Digital",
-  "description": "Una elegante invitación digital para bodas con cuenta regresiva, detalles del evento, mapa y confirmación de asistencia (RSVP).",
+  "name": "TuInvi - Invitaciones Digitales Premium",
+  "description": "Plataforma para crear invitaciones digitales elegantes para bodas y eventos especiales con confirmación vía WhatsApp y asesoría personalizada.",
   "requestFramePermissions": ["geolocation"]
 }
