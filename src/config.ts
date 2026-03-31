@@ -27,6 +27,18 @@ export const WEDDING_CONFIG = {
   showRsvpForm: false, // Set to true to show the form, false to hide it
   showWelcomeScreen: false, // Set to true to show the welcome screen, false to skip it
   coupleInitials: "SyJC",
+  parents: {
+    show: true,
+    title: "Con la Bendición de Dios y nuestros padres",
+    brideParents: [
+      { name: "Martha Lorena Verduzco LLamas", isDeceased: false },
+      { name: "Oswaldo Aguirre Campos", isDeceased: true }
+    ],
+    groomParents: [
+      { name: "Ma. Blanca Esthela Chavez Barragan", isDeceased: false },
+      { name: "Jose Anaya Morales", isDeceased: false }
+    ]
+  }
 };
 
 export const getWhatsAppMessage = () => {

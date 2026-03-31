@@ -19,6 +19,18 @@ import {
 } from 'lucide-react';
 import { WEDDING_CONFIG, getWhatsAppMessage, getWhatsAppNoMessage } from '../config';
 
+// --- Custom Icons ---
+const LatinCross = ({ className }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M11 2h2v5h5v2h-5v13h-2v-13h-5v-2h5v-5z" />
+  </svg>
+);
+
 // --- Types ---
 interface ItineraryItem {
   time: string;
@@ -353,6 +365,60 @@ const WeddingInvitation = () => {
           </p>
         </div>
       </section>
+
+      {/* Parents Section */}
+      {WEDDING_CONFIG.parents?.show && (
+        <section className="py-24 bg-cream border-b border-stone-100">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <SectionHeading title={WEDDING_CONFIG.parents.title} />
+            <div className="grid md:grid-cols-2 gap-12 mt-12">
+              {/* Bride's Parents */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <h3 className="text-2xl font-serif text-gold italic">Ella</h3>
+                <div className="space-y-2">
+                  {WEDDING_CONFIG.parents.brideParents.map((parent, idx) => (
+                    <div key={idx} className="flex items-center justify-center gap-2">
+                      <p className="text-xl font-serif text-stone-800">{parent.name}</p>
+                      {parent.isDeceased && (
+                        <span className="text-stone-400" title="Fallecido">
+                          <LatinCross className="w-3 h-4" />
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Groom's Parents */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <h3 className="text-2xl font-serif text-gold italic">Él</h3>
+                <div className="space-y-2">
+                  {WEDDING_CONFIG.parents.groomParents.map((parent, idx) => (
+                    <div key={idx} className="flex items-center justify-center gap-2">
+                      <p className="text-xl font-serif text-stone-800">{parent.name}</p>
+                      {parent.isDeceased && (
+                        <span className="text-stone-400" title="Fallecido">
+                          <LatinCross className="w-3 h-4" />
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Story / Welcome */}
       <section className="py-24 bg-cream">
