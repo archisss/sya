@@ -39,8 +39,8 @@ export const WEDDING_CONFIG = {
       { name: "Oswaldo Aguirre Campos", isDeceased: true }
     ],
     groomParents: [
-      { name: "Ma. Blanca Esthela Chavez Barragan", isDeceased: false },
-      { name: "Jose Anaya Morales", isDeceased: false }
+      { name: "Ma. Blanca Esthela Chávez Barragán", isDeceased: false },
+      { name: "José Anaya Morales", isDeceased: false }
     ]
   }
 };
