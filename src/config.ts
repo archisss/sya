@@ -6,8 +6,8 @@ export const WEDDING_CONFIG = {
   itinerary: [
     { time: "05:00 pm", title: "Ceremonia religiosa", subtitle: "Parroquia del Espíritu Santo", side: 'left' as const, type: 'ceremony' },
     { time: "07:00 pm", title: "Recepción", subtitle: "", side: 'right' as const, type: 'reception' },
-    /*{ time: "09:00 pm", title: "Brindis", subtitle: "", side: 'left' as const, type: 'toast' },
-    { time: "10:00 pm", title: "Baile de novios", subtitle: "", side: 'right' as const, type: 'dance' },
+    { time: "08:00 pm", title: "Banquete", subtitle: "", side: 'left' as const, type: 'Banquet' },
+    /*{ time: "10:00 pm", title: "Baile de novios", subtitle: "", side: 'right' as const, type: 'dance' },
     { time: "11:00 pm", title: "Fiesta", subtitle: "", side: 'left' as const, type: 'party' },
     { time: "02:00 am", title: "Fin de fiesta", subtitle: "", side: 'right' as const, type: 'end' },*/
   ],
