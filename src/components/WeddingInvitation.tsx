@@ -478,7 +478,7 @@ const WeddingInvitation = () => {
             "El amor no consiste en mirarse el uno al otro, sino en mirar juntos en la misma dirección."
           </div>
           <p className="mt-8 text-stone-500 leading-relaxed">
-            Después de 10 años de risas, viajes y aprendizajes, hemos decidido dar el paso más importante de nuestras vidas. 
+            Después de 10 años de risas, viajes y aprendizajes, hemos decidido dar el paso más importante de nuestra vida. 
             Queremos que seas parte de este nuevo capítulo.
           </p>
         </div>
