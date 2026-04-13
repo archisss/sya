@@ -341,14 +341,6 @@ const WeddingInvitation = () => {
           >
             <div className="w-px h-16 bg-white/30 mb-4" />
             <p className="text-xl md:text-2xl font-serif italic mb-6">{WEDDING_CONFIG.weddingDateDisplay}</p>
-            <div className="flex gap-4">
-              <a 
-                href="#rsvp"
-                className="px-12 py-4 bg-white text-stone-900 rounded-full text-xs uppercase tracking-widest hover:bg-gold hover:text-white transition-all shadow-xl"
-              >
-                Confirmar Asistencia
-              </a>
-            </div>
             <motion.div 
               animate={{ y: [0, 10, 0] }}
               transition={{ repeat: Infinity, duration: 2 }}
