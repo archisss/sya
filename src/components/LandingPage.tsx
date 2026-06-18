@@ -9,7 +9,9 @@ import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
-  Zap
+  Zap,
+  ExternalLink,
+  Smartphone
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -161,7 +163,7 @@ const LandingPage = () => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-12">
               <div className="flex-1">
                 <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-6xl font-serif">$799</span>
+                  <span className="text-6xl font-serif">$999</span>
                   <span className="text-stone-400 uppercase tracking-widest text-sm">MXN</span>
                 </div>
                 <ul className="space-y-4">
@@ -206,6 +208,179 @@ const LandingPage = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Examples / Portfolio Section */}
+      <section id="examples" className="py-24 md:py-32 bg-stone-100 border-b border-stone-200">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1 rounded-full bg-gold/10 border border-gold/20 text-gold text-xs uppercase tracking-[0.3em] mb-4">
+              Galería de Demos
+            </span>
+            <h2 className="text-4xl md:text-6xl font-serif mb-6 text-stone-900">
+              Siente la Experiencia <span className="italic text-gold">TuInvi</span>
+            </h2>
+            <p className="text-stone-500 max-w-2xl mx-auto text-lg leading-relaxed">
+              Explora nuestras invitaciones activas e inspiraciones de muestra. Toca cualquiera de las tarjetas para experimentar cómo lo verán tus invitados.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Real Featured Example: Sylvana & Jose Carlos */}
+            <motion.div 
+              whileHover={{ y: -8 }}
+              className="bg-white rounded-[2.5rem] overflow-hidden border border-stone-200/60 shadow-xl flex flex-col h-full group transition-all duration-300"
+            >
+              <div className="h-64 relative overflow-hidden bg-stone-100">
+                <img 
+                  src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800" 
+                  alt="Invitación de Sylvana y José Carlos" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-750"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-stone-900/10 to-transparent flex items-end p-6">
+                  <span className="bg-gold text-stone-900 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 animate-pulse">
+                    <span className="w-2 h-2 rounded-full bg-stone-900 inline-block animate-ping"></span>
+                    Ejemplo Clásico Activo
+                  </span>
+                </div>
+              </div>
+              <div className="p-8 flex flex-col flex-grow">
+                <h3 className="text-2xl font-serif mb-2 text-stone-900 flex items-center justify-between">
+                  Sylvana & José Carlos
+                  <Heart className="w-5 h-5 text-red-500 fill-red-500 animate-pulse" />
+                </h3>
+                <p className="text-xs uppercase tracking-widest text-gold mb-4 font-mono font-bold">Estilo Clásico & Dorado</p>
+                <p className="text-stone-500 text-sm mb-6 leading-relaxed">
+                  Nuestra invitación estrella con música de fondo romántica, cuenta regresiva, ubicación con Google Maps, confirmación WhatsApp y bendición del corazón. ¡Un éxito rotundo!
+                </p>
+                
+                <div className="flex flex-wrap gap-1.5 mb-8">
+                  {['Música', 'Mesa de Regalos', 'GPS', 'Contador', 'RSVP WhatsApp', 'Sección de Padres'].map(tag => (
+                    <span key={tag} className="bg-stone-50 text-stone-600 text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md border border-stone-100">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-auto">
+                  <a 
+                    href="/SylvanayJoseCarlos" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-4 bg-stone-900 text-white rounded-2xl text-xs uppercase tracking-wider font-bold hover:bg-gold hover:text-stone-900 transition-all shadow-md group-hover:shadow-lg"
+                  >
+                    <span>Ver Invitación</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Concept Example 2: Diana & Manuel */}
+            <motion.div 
+              whileHover={{ y: -8 }}
+              className="bg-white rounded-[2.5rem] overflow-hidden border border-stone-200/60 shadow-xl flex flex-col h-full group transition-all duration-300"
+            >
+              <div className="h-64 relative overflow-hidden bg-stone-100">
+                <img 
+                  src="https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&q=80&w=800" 
+                  alt="Invitación Estilo Boho-Chic" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-750"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-stone-900/10 to-transparent flex items-end p-6">
+                  <span className="bg-[#b45309] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-white inline-block"></span>
+                    Ejemplo Boho-Chic Activo
+                  </span>
+                </div>
+              </div>
+              <div className="p-8 flex flex-col flex-grow">
+                <h3 className="text-2xl font-serif mb-2 text-stone-900 flex items-center justify-between">
+                  Diana & Manuel
+                  <Heart className="w-5 h-5 text-amber-700 fill-amber-700" />
+                </h3>
+                <p className="text-xs uppercase tracking-widest text-[#b45309] mb-4 font-mono font-bold">Estilo Rústico Cálido</p>
+                <p className="text-stone-500 text-sm mb-6 leading-relaxed">
+                  Pensado para celebraciones en jardín, hacienda o playa. Diseñado con tonos tierra románticos, hermosas caligrafías bohemias, música acústica y mapa integrado.
+                </p>
+                
+                <div className="flex flex-wrap gap-1.5 mb-8">
+                  {['Acoustic Track', 'Ubicación', 'Ceremonia de Arena', 'Fogata rústica', 'Mesa de Regalos'].map(tag => (
+                    <span key={tag} className="bg-stone-50 text-stone-600 text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md border border-stone-100">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-auto">
+                  <a 
+                    href="/DianayManuel" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-4 bg-stone-900 text-white rounded-2xl text-xs uppercase tracking-wider font-bold hover:bg-[#b45309] hover:text-white transition-all shadow-md group-hover:shadow-lg"
+                  >
+                    <span>Ver Invitación</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Concept Example 3: Sofía & Carlos */}
+            <motion.div 
+              whileHover={{ y: -8 }}
+              className="bg-white rounded-[2.5rem] overflow-hidden border border-stone-200/60 shadow-xl flex flex-col h-full group transition-all duration-300"
+            >
+              <div className="h-64 relative overflow-hidden bg-stone-100">
+                <img 
+                  src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800" 
+                  alt="Invitación Estilo Minimalista Moderno" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-750"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-stone-900/10 to-transparent flex items-end p-6">
+                  <span className="bg-[#064e3b] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-white inline-block"></span>
+                    Ejemplo Minimal Activo
+                  </span>
+                </div>
+              </div>
+              <div className="p-8 flex flex-col flex-grow">
+                <h3 className="text-2xl font-serif mb-2 text-stone-900 flex items-center justify-between">
+                  Sofía & Carlos
+                  <Heart className="w-5 h-5 text-emerald-900 fill-emerald-900" />
+                </h3>
+                <p className="text-xs uppercase tracking-widest text-[#064e3b] mb-4 font-mono font-bold">Estilo Minimal Elegante</p>
+                <p className="text-stone-500 text-sm mb-6 leading-relaxed">
+                  Para bodas de noche contemporáneas y sofisticadas. Enfoque limpio, fuentes de alto contraste, ambientación chill, animaciones sutiles y paleta en verde botánico profundo.
+                </p>
+                
+                <div className="flex flex-wrap gap-1.5 mb-8">
+                  {['Chill loops', 'Limpio', 'Tipografía Moderna', 'Luxury Rave', 'Fácil Lectura'].map(tag => (
+                    <span key={tag} className="bg-stone-50 text-stone-600 text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md border border-stone-100">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-auto">
+                  <a 
+                    href="/SofiayCarlos" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-4 bg-stone-900 text-white rounded-2xl text-xs uppercase tracking-wider font-bold hover:bg-[#064e3b] hover:text-white transition-all shadow-md group-hover:shadow-lg"
+                  >
+                    <span>Ver Invitación</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
 
       {/* Footer */}
       <footer className="py-12 bg-stone-50 border-t border-stone-200 text-center">

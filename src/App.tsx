@@ -5,7 +5,7 @@ import WeddingInvitation from './components/WeddingInvitation';
 
 // --- CONFIGURACIÓN TEMPORAL ---
 // Cambia esto a 'true' cuando pase la boda y quieras que la página informativa sea la principal.
-const SHOW_LANDING_AT_ROOT = false;
+const SHOW_LANDING_AT_ROOT = true;
 
 function App() {
   return (
